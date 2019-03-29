@@ -1,0 +1,28 @@
+# docker compose version
+version: '3'
+
+# list of services
+services:
+  db:
+    build:
+      context: .
+      dockerfile: .buildMysql.dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: kevin
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    container_name: mysql_db
+    ports:
+      - "9000:3306"
+    tty: true
+  app:
+    build:
+      context: .
+      dockerfile: .buildGo.dockerfile
+    container_name: golang_app
+    ports:
+      - "3001:3001"
+    tty: true
+    depends_on:
+      - db
